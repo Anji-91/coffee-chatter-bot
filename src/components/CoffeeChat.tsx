@@ -12,7 +12,7 @@ interface Message {
 }
 
 const INITIAL_MESSAGE = {
-  text: "Hello! Welcome to Coffee Chat. How can I help you today? Feel free to ask about our menu items and prices!",
+  text: "Hello! Welcome to Coffee Chat. How can I help you today? Feel free to ask about our menu items, prices, seasonal specials, or recommendations!",
   isBot: true,
 };
 
@@ -42,6 +42,18 @@ const MENU_PRICES = {
     "croissant": "$3.50",
     "waffle": "$3.50",
     "sandwich": "$4.50",
+  },
+  seasonal: {
+    "pumpkin spice latte": "$5.00",
+    "mint chocolate mocha": "$5.00",
+    "caramel apple cider": "$4.50",
+    "gingerbread latte": "$5.00",
+  },
+  combos: {
+    "breakfast combo": "Any hot coffee + croissant for $6.50",
+    "afternoon delight": "Any iced drink + muffin for $7.00",
+    "tea time special": "Any tea + waffle for $6.50",
+    "lunch combo": "Any drink + sandwich for $8.00",
   }
 };
 
@@ -79,22 +91,43 @@ export const CoffeeChat = () => {
             .map(([item, price]) => `${item.charAt(0).toUpperCase() + item.slice(1)}: ${price}`)
             .join("\n");
       }
-      return "We have various drinks and snacks available. You can ask about specific categories like 'hot coffee prices', 'iced drink prices', 'tea prices', or 'snack prices'!";
+      if (lowerMessage.includes("seasonal") || lowerMessage.includes("special drinks")) {
+        return "Here are our seasonal drink prices:\n" +
+          Object.entries(MENU_PRICES.seasonal)
+            .map(([drink, price]) => `${drink.charAt(0).toUpperCase() + drink.slice(1)}: ${price}`)
+            .join("\n");
+      }
+      if (lowerMessage.includes("combo") || lowerMessage.includes("deal")) {
+        return "Here are our combo deals:\n" +
+          Object.entries(MENU_PRICES.combos)
+            .map(([combo, details]) => `${combo.charAt(0).toUpperCase() + combo.slice(1)}: ${details}`)
+            .join("\n");
+      }
+      return "We have various drinks and snacks available. You can ask about specific categories like:\n- Hot coffee prices\n- Iced drink prices\n- Tea prices\n- Snack prices\n- Seasonal specials\n- Combo deals";
     }
 
     if (lowerMessage.includes("popular")) {
-      return "Our most popular drinks are:\n- Caramel Cream ($4.50)\n- Hazelnut Mocha ($4.50)\n- Latte ($4.00)";
+      return "Our most popular items are:\n- Caramel Cream ($4.50)\n- Hazelnut Mocha ($4.50)\n- Pumpkin Spice Latte ($5.00)\n- Breakfast Combo (Any hot coffee + croissant for $6.50)";
     }
     if (lowerMessage.includes("menu")) {
-      return "We offer hot coffee drinks, iced drinks, teas, and snacks. Would you like to know the prices for any specific category?";
+      return "We offer:\n- Hot coffee drinks\n- Iced drinks\n- Teas\n- Snacks\n- Seasonal specials\n- Combo deals\n\nWould you like to know the prices for any specific category?";
     }
-    if (lowerMessage.includes("special")) {
-      return "Today's special is our Cookies N Cream drink for $5.00! We also have a combo deal: any hot coffee with a muffin for $6.50!";
+    if (lowerMessage.includes("seasonal") || lowerMessage.includes("special drinks")) {
+      return "Our current seasonal drinks are:\n" +
+        Object.entries(MENU_PRICES.seasonal)
+          .map(([drink, price]) => `${drink.charAt(0).toUpperCase() + drink.slice(1)}: ${price}`)
+          .join("\n");
+    }
+    if (lowerMessage.includes("combo") || lowerMessage.includes("deal")) {
+      return "Here are our combo deals:\n" +
+        Object.entries(MENU_PRICES.combos)
+          .map(([combo, details]) => `${combo.charAt(0).toUpperCase() + combo.slice(1)}: ${details}`)
+          .join("\n");
     }
     if (lowerMessage.includes("recommend")) {
-      return "I recommend trying our Hazelnut Mocha ($4.50) or our classic Cappuccino ($4.00). Both are customer favorites!";
+      return "Based on our customers' favorites, I recommend:\n1. Hazelnut Mocha ($4.50) - Perfect balance of nutty and chocolate flavors\n2. Pumpkin Spice Latte ($5.00) - Our seasonal favorite\n3. Breakfast Combo - Any hot coffee + croissant for $6.50\n4. Caramel Cream ($4.50) - Sweet and refreshing";
     }
-    return "I'd be happy to help you with our menu and prices! You can ask about specific drinks, categories, or our daily specials.";
+    return "I'd be happy to help you with our menu and prices! You can ask about:\n- Regular menu items and prices\n- Seasonal specials\n- Combo deals\n- Popular items\n- Recommendations";
   };
 
   const handleSend = async (message: string) => {

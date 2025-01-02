@@ -6,10 +6,10 @@ interface ChatSuggestionsProps {
 
 export const ChatSuggestions = ({ onSuggestionClick }: ChatSuggestionsProps) => {
   const suggestions = [
-    "What's your most popular drink?",
-    "Tell me about your coffee beans",
     "What are today's specials?",
-    "Do you have any seasonal drinks?",
+    "Show me the combo deals",
+    "What seasonal drinks do you have?",
+    "What do you recommend?",
   ];
 
   return (
